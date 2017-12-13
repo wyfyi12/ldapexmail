@@ -66,7 +66,9 @@ public class selectwindow extends JFrame {
 	 */
 	
 	public selectwindow() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setTitle("选择同步");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 549, 339);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,14 +78,13 @@ public class selectwindow extends JFrame {
 		JLabel lblAd = new JLabel("AD域选择同步");
 		lblAd.setFont(new Font("宋体", Font.PLAIN, 16));
 		lblAd.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAd.setBounds(10, 0, 414, 25);
+		lblAd.setBounds(10, 0, 513, 25);
 		contentPane.add(lblAd);
 		
 		
 		JButton button = new JButton("开始同步");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(table.getRowCount());
 				for(int i=0;i<table.getRowCount();i++){
 					if(table.getValueAt(i, 0).toString().contains("true")){
 						User u=new User();

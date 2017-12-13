@@ -19,7 +19,7 @@ public class str2user {
 			}
 		}
 		party=party.substring(0, party.length()-1);
-		u.setParty("南京艺术学院/"+party);
+		u.setParty(GetProp.getconfig("rootparty")+"/"+party);
 		return u;
 	} 
 }

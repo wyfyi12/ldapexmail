@@ -30,15 +30,18 @@ public class configwindow extends JFrame {
 	private JTextField configadpassword;
 	private JTextField configaduserid;
 	private JTextField configadurl;
+	private JTextField addomain;
+	private JTextField rootparty;
+	private JTextField userpassword;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void open() {
+	public static void open(JTextField maintxlsecret,JTextField maincorpid,JTextField mainadurl,JTextField mainaduserid,JTextField mainadpassword,JTextField maindomain,JTextField mainrootparty,JTextField mainuserpassword) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					configwindow frame = new configwindow();
+					configwindow frame = new configwindow(maintxlsecret,maincorpid,mainadurl,mainaduserid,mainadpassword,maindomain,mainrootparty,mainuserpassword);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,7 +53,8 @@ public class configwindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public configwindow() {
+	public configwindow(JTextField maintxlsecret,JTextField maincorpid,JTextField mainadurl,JTextField mainaduserid,JTextField mainadpassword,JTextField maindomain,JTextField mainrootparty,JTextField mainuserpassword) {
+		setTitle("配置信息");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 506, 362);
@@ -79,7 +83,7 @@ public class configwindow extends JFrame {
 		contentPane.add(configcorpid);
 		
 		JLabel label_2 = new JLabel("通讯录Secret:");
-		label_2.setBounds(171, 60, 84, 15);
+		label_2.setBounds(178, 60, 84, 15);
 		contentPane.add(label_2);
 		
 		configtxlsecret = new JTextField();
@@ -89,44 +93,44 @@ public class configwindow extends JFrame {
 		
 		configadpassword = new JTextField();
 		configadpassword.setColumns(10);
-		configadpassword.setBounds(317, 117, 178, 21);
+		configadpassword.setBounds(317, 134, 178, 21);
 		contentPane.add(configadpassword);
 		
 		JLabel label_3 = new JLabel("管理员密码:");
-		label_3.setBounds(229, 120, 78, 15);
+		label_3.setBounds(229, 137, 78, 15);
 		contentPane.add(label_3);
 		
 		configaduserid = new JTextField();
 		configaduserid.setColumns(10);
-		configaduserid.setBounds(92, 117, 127, 21);
+		configaduserid.setBounds(92, 134, 127, 21);
 		contentPane.add(configaduserid);
 		
 		JLabel label_4 = new JLabel("管理员帐号:");
-		label_4.setBounds(15, 120, 76, 15);
+		label_4.setBounds(15, 137, 76, 15);
 		contentPane.add(label_4);
 		
 		JLabel label_5 = new JLabel("AD域信息：");
-		label_5.setBounds(5, 90, 77, 15);
+		label_5.setBounds(5, 107, 77, 15);
 		contentPane.add(label_5);
 		
 		JLabel label_6 = new JLabel("LDAP_URL:");
-		label_6.setBounds(15, 150, 67, 15);
+		label_6.setBounds(15, 167, 67, 15);
 		contentPane.add(label_6);
 		
 		configadurl = new JTextField();
 		configadurl.setColumns(10);
-		configadurl.setBounds(82, 147, 413, 21);
+		configadurl.setBounds(82, 164, 138, 21);
 		contentPane.add(configadurl);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(7, 210, 488, 114);
+		panel.setBounds(7, 230, 488, 94);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JTextArea configconsole = new JTextArea();
 		configconsole.setWrapStyleWord(true);
 		configconsole.setLineWrap(true);
-		configconsole.setBounds(0, 0, 488, 114);
+		configconsole.setBounds(0, 0, 488, 94);
 		panel.add(configconsole);
 		configconsole.setEditable(false);
 		
@@ -142,7 +146,7 @@ public class configwindow extends JFrame {
 				Connection.testconnad(configconsole, adurl, aduserid, adpassword);
 			}
 		});
-		btnNewButton.setBounds(5, 180, 93, 23);
+		btnNewButton.setBounds(5, 197, 93, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton button = new JButton("清空配置");
@@ -157,7 +161,7 @@ public class configwindow extends JFrame {
 				configconsole.append("清空配置成功!\r\n");
 			}
 		});
-		button.setBounds(138, 180, 93, 23);
+		button.setBounds(138, 197, 93, 23);
 		contentPane.add(button);
 		
 		JButton button_1 = new JButton("保存配置");
@@ -165,30 +169,64 @@ public class configwindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				configconsole.append("保存配置中。。。\r\n");
 				System.out.println("保存配置中。。。\r\n");
-				String corpid=configcorpid.getText();
-				String txlsecret=configtxlsecret.getText();
-				String adurl=configadurl.getText();
-				String aduserid=configaduserid.getText();
-				String adpassword=configadpassword.getText();
-				GetProp.setValue("corpid", corpid);
-				GetProp.setValue("txlsecret", txlsecret);
-				GetProp.setValue("ldapurl", adurl);
-				GetProp.setValue("userid", aduserid);
-				GetProp.setValue("password", adpassword);
+				GetProp.saveconfig("corpid", configcorpid.getText());
+				GetProp.saveconfig("txlsecret", configtxlsecret.getText());
+				GetProp.saveconfig("ldapurl", configadurl.getText());
+				GetProp.saveconfig("userid", configaduserid.getText());
+				GetProp.saveconfig("password", configadpassword.getText());
+				GetProp.saveconfig("addomain", addomain.getText());
+				GetProp.saveconfig("rootparty", rootparty.getText());
+				GetProp.saveconfig("userpassword", userpassword.getText());
 				configconsole.append("保存配置成功!\r\n");
+				maincorpid.setText(GetProp.getconfig("corpid"));
+				maintxlsecret.setText(GetProp.getconfig("txlsecret"));
+				mainadurl.setText("ldap://"+GetProp.getconfig("ldapurl"));
+				mainaduserid.setText(GetProp.getconfig("userid"));
+				mainadpassword.setText(GetProp.getconfig("password"));
+				maindomain.setText(GetProp.getconfig("addomain"));
+				mainrootparty.setText(GetProp.getconfig("rootparty"));
+				mainuserpassword.setText(GetProp.getconfig("userpassword"));
 			}
 		});
-		button_1.setBounds(271, 180, 93, 23);
+		button_1.setBounds(271, 197, 93, 23);
 		contentPane.add(button_1);
 		
 		JButton button_2 = new JButton("返回同步");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				dispose();
 			}
 		});
-		button_2.setBounds(404, 180, 93, 23);
+		button_2.setBounds(404, 197, 93, 23);
 		contentPane.add(button_2);
+		
+		JLabel lblLdap = new JLabel("LDAP域名:");
+		lblLdap.setBounds(229, 167, 78, 15);
+		contentPane.add(lblLdap);
+		
+		addomain = new JTextField();
+		addomain.setBounds(293, 164, 202, 21);
+		contentPane.add(addomain);
+		addomain.setColumns(10);
+		
+		JLabel label_7 = new JLabel("邮箱根部门:");
+		label_7.setBounds(15, 90, 76, 15);
+		contentPane.add(label_7);
+		
+		rootparty = new JTextField();
+		rootparty.setBounds(95, 87, 84, 21);
+		contentPane.add(rootparty);
+		rootparty.setColumns(10);
+		
+		JLabel label_8 = new JLabel("新建邮箱统一密码:");
+		label_8.setBounds(189, 90, 118, 15);
+		contentPane.add(label_8);
+		
+		userpassword = new JTextField();
+		userpassword.setBounds(305, 87, 190, 21);
+		contentPane.add(userpassword);
+		userpassword.setColumns(10);
 		
 		
 	}

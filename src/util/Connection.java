@@ -26,6 +26,7 @@ public class Connection {
 	public static void testconnad(JTextArea console,String adurl,String aduserid,String adpassword){
 		console.append("微软AD域测试连接中。。。\r\n");
 		console.paintImmediately(console.getBounds());
+		System.out.println(adurl+","+aduserid+","+adpassword);
 		String adrs=Ldaputil.connect(adurl,  aduserid, adpassword);
 		if(adrs.equals("success")){
 			console.append("微软AD域测试连接成功!\r\n");

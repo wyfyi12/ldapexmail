@@ -45,6 +45,31 @@ public class Ldaputil {
 			return "fail," + e.getMessage();
 		}
 	}
+	
+	public static boolean userconnect(String username,String password,String ldap_url){
+		boolean result=false;
+		Hashtable<String, String> env = new Hashtable<String, String>();
+		 LdapContext ldapContext = null;  
+         //用户名称，cn,ou,dc 分别：用户，组，域  
+         env.put(Context.SECURITY_PRINCIPAL, username);  
+         //用户密码 cn 的密码  
+         env.put(Context.SECURITY_CREDENTIALS, password);  
+         //url 格式：协议://ip:端口/组,域   ,直接连接到域或者组上面  
+         env.put(Context.PROVIDER_URL, ldap_url);  
+         //LDAP 工厂  
+         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");  
+         //验证的类型     "none", "simple", "strong"  
+         env.put(Context.SECURITY_AUTHENTICATION, "simple");  
+         try {  
+          ldapContext = new InitialLdapContext(env, null);  
+          result=true;  
+          System.out.println("---connection is ready----");  
+      } catch (NamingException e) {  
+          //e.printStackTrace();  
+          System.out.println("--- get connection failure ----");  
+      }  
+		return result;
+	}
 
 	/**
 	 * 查询
@@ -57,7 +82,7 @@ public class Ldaputil {
 			SearchControls searchCtls = new SearchControls();
 			searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 			String searchFilter = "(&(objectCategory=person)(objectClass=user)(name=*))";
-			String searchBase = "DC=nantutest,DC=com";
+			String searchBase = "DC="+GetProp.getconfig("addomain").split(".")[0]+",DC="+GetProp.getconfig("addomain").split(".")[0];
 			String returnedAtts[] = { "memberOf", "sAMAccountName", "department",  "telephoneNumber",
 					"mail" };
 			searchCtls.setReturningAttributes(returnedAtts);
@@ -95,4 +120,6 @@ public class Ldaputil {
 		return userja;
 	}
 
+	
+	
 }
